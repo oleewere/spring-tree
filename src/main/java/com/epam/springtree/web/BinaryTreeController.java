@@ -25,23 +25,17 @@ public class BinaryTreeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String get(ModelMap model){
-		NodeCommand nodeCommand = new NodeCommand();
-		
-		model.addAttribute("tree", nodeCommand);
-		
+		NodeCommand nodeCommand = new NodeCommand();	
+		model.addAttribute("tree", nodeCommand);	
 		return "home";
 	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String createTree(ModelMap model, @ModelAttribute("tree") NodeCommand nodeCommand, BindingResult result){
-		
 		final List<Integer>numbers = StringToNumbers(nodeCommand.getNumbers());
 		final JSONObject obj = JSONObject.fromObject(binarySearchTreeService.getTreeFromList(numbers));
-
 		model.addAttribute("createdTree", obj);
-
-		return "result";
-		
+		return "result";		
 	}
 
 	private List<Integer> StringToNumbers(String numbers) {
