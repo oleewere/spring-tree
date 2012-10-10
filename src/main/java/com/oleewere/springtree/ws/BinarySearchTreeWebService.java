@@ -1,4 +1,4 @@
-package com.epam.springtree.ws;
+package com.oleewere.springtree.ws;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.epam.springtree.domain.Node;
-import com.epam.springtree.domain.NodeComparator;
-import com.epam.springtree.jsonsupport.WrappedList;
+import com.oleewere.springtree.domain.Node;
+import com.oleewere.springtree.domain.NodeComparator;
+import com.oleewere.springtree.jsonsupport.WrappedList;
 
 import flexjson.JSONSerializer;
 
@@ -28,6 +28,9 @@ public class BinarySearchTreeWebService {
 		final NodeComparator<Integer> comp = new NodeComparator<Integer>();
 		String result = NodeToJson(Node.buildBinarySearchTree(datas, comp));
         log.info("küldés: {}",result);
+		/*WrapNode wn = new WrapNode();
+		wn.setNode(Node.buildBinarySearchTree(datas, comp));
+		return new ResponseEntity<WrapNode>(wn, HttpStatus.OK);*/
         return result;
 	}
 

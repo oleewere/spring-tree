@@ -1,9 +1,7 @@
-package com.epam.springtree.web;
+package com.oleewere.springtree.web;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 
-import com.epam.springtree.domain.NodeCommand;
-import com.epam.springtree.services.BinarySearchTreeService;
+import com.oleewere.springtree.domain.NodeCommand;
+import com.oleewere.springtree.services.BinarySearchTreeService;
 
 @Controller
 public class BinaryTreeController {
@@ -33,8 +31,8 @@ public class BinaryTreeController {
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public String createTree(ModelMap model, @ModelAttribute("tree") NodeCommand nodeCommand, BindingResult result){
 		final List<Integer>numbers = StringToNumbers(nodeCommand.getNumbers());
-		final JSONObject obj = JSONObject.fromObject(binarySearchTreeService.getTreeFromList(numbers));
-		model.addAttribute("createdTree", obj);
+		//final JSONObject obj = JSONObject.fromObject(binarySearchTreeService.getTreeFromList(numbers));
+		model.addAttribute("createdTree", binarySearchTreeService.getTreeFromList(numbers));
 		return "result";		
 	}
 

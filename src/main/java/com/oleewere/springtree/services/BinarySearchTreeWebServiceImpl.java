@@ -1,4 +1,4 @@
-package com.epam.springtree.services;
+package com.oleewere.springtree.services;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.epam.springtree.domain.Node;
-import com.epam.springtree.jsonsupport.WrappedList;
+import com.oleewere.springtree.domain.Node;
+import com.oleewere.springtree.jsonsupport.WrappedList;
 
 import flexjson.JSONDeserializer;
 
@@ -31,7 +31,7 @@ public class BinarySearchTreeWebServiceImpl implements BinarySearchTreeService {
 	private String service;
 	
 	@Override
-	public Node<Integer> getTreeFromList(List<Integer> numbers) {
+	public String getTreeFromList(List<Integer> numbers) {
 		restTemplate = new RestTemplate();	
     	
 		final List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
@@ -40,7 +40,7 @@ public class BinarySearchTreeWebServiceImpl implements BinarySearchTreeService {
     	
     	restTemplate.setMessageConverters(messageConverters);	
     	
-    	WrappedList wl = new WrappedList();
+    	final WrappedList wl = new WrappedList();
     	for (Integer n : numbers) {
 			wl.add(n);
 		}	
@@ -49,10 +49,9 @@ public class BinarySearchTreeWebServiceImpl implements BinarySearchTreeService {
 			"/"+context+"/"+service, wl, String.class);
 	    
 	    log.info("visszatérés: {}",resp);
-        final Node<Integer> veg = fromJsonToNode(resp);
-        log.info("Node-ok: {}",veg);
-		
-		return veg;
+        //final Node<Integer> veg = fromJsonToNode(resp);
+
+        return resp;
 	}
 	
 	public Node<Integer> fromJsonToNode(String json) {

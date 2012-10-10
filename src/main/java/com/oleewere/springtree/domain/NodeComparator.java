@@ -1,4 +1,4 @@
-package com.epam.springtree.domain;
+package com.oleewere.springtree.domain;
 
 import java.util.Comparator;
 
