@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.epam.springtree">
+	<logger name="com.oleewere.springtree">
 		<level value="info" />
 	</logger>
 	

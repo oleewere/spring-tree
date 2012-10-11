@@ -28,9 +28,6 @@ public class BinarySearchTreeWebService {
 		final NodeComparator<Integer> comp = new NodeComparator<Integer>();
 		String result = NodeToJson(Node.buildBinarySearchTree(datas, comp));
         log.info("küldés: {}",result);
-		/*WrapNode wn = new WrapNode();
-		wn.setNode(Node.buildBinarySearchTree(datas, comp));
-		return new ResponseEntity<WrapNode>(wn, HttpStatus.OK);*/
         return result;
 	}
 

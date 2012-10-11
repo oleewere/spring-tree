@@ -9,12 +9,11 @@
 </head>
 <body>
 	<h1>Binary search tree maker</h1>
-	
-	<form:form action="create" modelAttribute="tree" >
+	<form:form modelAttribute="tree" >
+	    <form:errors path="numbers" cssStyle="color: red;"/>
+	    <br/>
 		<form:textarea path="numbers" cols="30" rows="10"/>
-
 	  <input type="submit" value="OK"/>
 	</form:form>
-
 </body>
 </html>
