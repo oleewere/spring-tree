@@ -49,7 +49,6 @@ public class TreeWebServiceTest {
 	 PowerMockito.verifyNew(NodeComparator.class).withNoArguments();
 	 //THAN
 	 assertEquals("data",result);
-	 
-	 
+	  
  }
 }
