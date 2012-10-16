@@ -32,7 +32,7 @@ public class BinaryTreeController {
 		final NodeCommand nodeCommand = new NodeCommand();
 		model.addAttribute("tree", nodeCommand);
 		return "home";
-	}
+		}
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public String createTree(ModelMap model,
