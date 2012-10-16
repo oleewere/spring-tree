@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -27,7 +29,7 @@ import com.oleewere.springtree.services.BinarySearchTreeService;
 import com.oleewere.springtree.web.BinaryTreeController;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({BinaryTreeController.class, JSONObject.class})
+@PrepareForTest({BinaryTreeController.class,JSONObject.class})
 public class TreeControllerTest {
 
 	@InjectMocks
@@ -63,27 +65,27 @@ public class TreeControllerTest {
 	public void testControllerWithPost() throws Exception {
 		//GIVEN
 		PowerMockito.doReturn(numbers).when(underTest,"StringToNumbers",numbersParam);
-		PowerMockito.mockStatic(JSONObject.class);
-		BDDMockito.given(JSONObject.fromObject("{\"data\": }")).willReturn(jsonObj);
+		//PowerMockito.mockStatic(JSONObject.class);
+		//BDDMockito.given(JSONObject.fromObject("{\"data\": }")).willReturn(jsonObj);
 		//BDDMockito.given(JSONObject.fromObject(BDDMockito.given(binarySearchTreeService.getTreeFromList(numbers)).willReturn(root))).willReturn(jsonObj);
 		//Mockito.when(JSONObject.fromObject("{\"data\": }")).thenReturn(jsonObj);
-		BDDMockito.given(jsonObj.toString()).willReturn("{\"data\": }");
+		//BDDMockito.given(jsonObj.toString()).willReturn("{\"data\": }");
 		BDDMockito.given(binarySearchTreeService.getTreeFromList(numbers)).willReturn(root);
 		BDDMockito.given(numbers.isEmpty()).willReturn(false);
 		BDDMockito.given(nodeCommand.getNumbers()).willReturn(numbersParam);
 		//WHEN
-		underTest.createTree(model, nodeCommand, result);
+		String testResult = underTest.createTree(model, nodeCommand, result);
 		
 		PowerMockito.verifyPrivate(underTest,Mockito.times(1)).invoke("StringToNumbers",numbersParam);
-		PowerMockito.verifyStatic(Mockito.times(1));
-		JSONObject.fromObject(jsonObj);
-		BDDMockito.verify(jsonObj.toString());
-		BDDMockito.verify(numbers.isEmpty());
-		BDDMockito.verify(nodeCommand.getNumbers());
-		BDDMockito.verify(binarySearchTreeService.getTreeFromList(numbers));
+		//PowerMockito.verifyStatic(Mockito.times(1));
+		//JSONObject.fromObject(jsonObj);
+		//BDDMockito.verify(jsonObj.toString());
+		BDDMockito.verify(numbers,Mockito.times(1)).isEmpty();
+		BDDMockito.verify(nodeCommand, Mockito.times(1)).getNumbers();
+		BDDMockito.verify(binarySearchTreeService, Mockito.times(1)).getTreeFromList(numbers);
 		
 		//THAN
-		assertEquals("result",underTest.get(model));	
+		assertEquals("result",testResult);	
 	}
 	
 }
