@@ -26,7 +26,7 @@ public class BinarySearchTreeWebService {
 		log.info("{}",list);
 		final List<Integer> datas = list;
 		final NodeComparator<Integer> comp = new NodeComparator<Integer>();
-		String result = NodeToJson(Node.buildBinarySearchTree(datas, comp));
+		final String result = NodeToJson(Node.buildBinarySearchTree(datas, comp));
         log.info("küldés: {}",result);
         return result;
 	}
