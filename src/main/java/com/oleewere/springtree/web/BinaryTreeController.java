@@ -1,14 +1,11 @@
 package com.oleewere.springtree.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 
 import net.sf.json.JSONObject;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.oleewere.springtree.domain.NodeCommand;
 import com.oleewere.springtree.services.BinarySearchTreeService;
+import com.oleewere.springtree.services.StringCuttingService;
 
 @Controller
 @Slf4j
@@ -27,6 +25,9 @@ public class BinaryTreeController {
 	@Autowired
 	private BinarySearchTreeService binarySearchTreeService;
 
+	@Autowired
+	private StringCuttingService stringCuttingService;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String get(ModelMap model) {
 		final NodeCommand nodeCommand = new NodeCommand();
@@ -38,7 +39,7 @@ public class BinaryTreeController {
 	public String createTree(ModelMap model,
 			@ModelAttribute("tree") NodeCommand nodeCommand,
 			BindingResult result) {
-		final List<Integer> numbers = StringToNumbers(nodeCommand.getNumbers());
+		final List<Integer> numbers = stringCuttingService.StringToNumbers(nodeCommand.getNumbers());
 		if (!numbers.isEmpty()) {
 			final JSONObject obj = JSONObject
 					.fromObject(binarySearchTreeService
@@ -51,30 +52,5 @@ public class BinaryTreeController {
 		}
 	}
 
-	private List<Integer> StringToNumbers(String numbers) {
-		final List<Integer> nums = new ArrayList<Integer>();
-		if (validateNumbers(numbers)) {
-			addNumbersToNumList(nums, numbers);
-		} else {
-			log.error("Hibás szám konvrzió. (A bemenetben )");
-		}
-		return nums;
-	}
-
-	private void addNumbersToNumList(List<Integer> nums, String numbers) {
-		final String[] tokens = numbers.split(" ");
-		for (String token : tokens) {
-			nums.add(NumberUtils.toInt(token));
-		}
-	}
-
-	private boolean validateNumbers(String numbers) {
-		if (StringUtils.isNumericSpace(numbers) && !StringUtils.isEmpty(numbers)) {
-			log.info("Valid formátum a számok konverziójára.");
-			return true;
-		} else {
-			return false;
-		}
-	}
 
 }

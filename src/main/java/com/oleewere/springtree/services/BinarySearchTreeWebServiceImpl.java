@@ -41,7 +41,6 @@ public class BinarySearchTreeWebServiceImpl implements BinarySearchTreeService {
 		final String resp = restTemplate.postForObject("http://" + host + ":"
 				+ port + "/" + context + "/" + service, wl, String.class);
 		log.info("visszatérés: {}", resp);
-		
 		return convertFromJsonToNode(resp);
 	}
 	
