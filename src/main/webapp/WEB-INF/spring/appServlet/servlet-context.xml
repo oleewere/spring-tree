@@ -24,7 +24,7 @@
 	
 	<context:component-scan base-package="com.oleewere.springtree" />
 	<context:property-placeholder location="classpath:webservice.properties" />
-	
+	<beans:bean name="restTemplate" id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
 	<beans:bean name="binarySearchTreeService" class="com.oleewere.springtree.services.BinarySearchTreeWebServiceImpl"/>
     <beans:bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource" p:useCodeAsDefaultMessage="true">

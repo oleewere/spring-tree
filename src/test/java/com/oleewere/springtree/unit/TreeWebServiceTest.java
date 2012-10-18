@@ -3,31 +3,37 @@ package com.oleewere.springtree.unit;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
+import static org.mockito.Mockito.*;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.oleewere.springtree.domain.Node;
-import com.oleewere.springtree.domain.NodeComparator;
+import com.oleewere.springtree.jsonsupport.JSONHelper;
 import com.oleewere.springtree.jsonsupport.WrappedList;
+import com.oleewere.springtree.nodeservices.NodeComparator;
+import com.oleewere.springtree.nodeservices.NodeHelper;
 import com.oleewere.springtree.ws.BinarySearchTreeWebService;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({BinarySearchTreeWebService.class, Node.class})
 public class TreeWebServiceTest {
- private BinarySearchTreeWebService underTest = PowerMockito.spy(new BinarySearchTreeWebService());
+ @InjectMocks
+ private BinarySearchTreeWebService underTest = new BinarySearchTreeWebService();
  @Mock
  private WrappedList wl;
  @Mock
- private NodeComparator<Integer> nodeComparator;
- @Mock
  private Node<Integer> node;
+ @Mock
+ private NodeHelper nodeHelper;
+ @Mock
+ private JSONHelper jsonHelper;
+ @BeforeClass
+ public static void setUpTestObject(){
+ }
  @Before
  public void setUp(){
 	 MockitoAnnotations.initMocks(this);
@@ -36,17 +42,17 @@ public class TreeWebServiceTest {
  @Test
  public void testRestService() throws Exception{
 	 //GIVEN
-	 PowerMockito.mockStatic(Node.class);
-	 BDDMockito.given(Node.buildBinarySearchTree(wl, nodeComparator)).willReturn(node);
-	 PowerMockito.whenNew(NodeComparator.class).withNoArguments().thenReturn(nodeComparator);
-	 PowerMockito.doReturn("data").when(underTest,"NodeToJson",node);
+     BDDMockito.given(nodeHelper.buildBinarySearchTree(
+    		 Mockito.<WrappedList>anyObject(), 
+    		 Mockito.<NodeComparator<Integer>>anyObject()))
+    		 .willReturn(node);
+     BDDMockito.given(jsonHelper.NodeToJson(Mockito.<Node<Integer>>anyObject())).willReturn("data");
 	 //WHEN
 	 String result = underTest.restService(wl);
 	 
-	 PowerMockito.verifyStatic(Mockito.times(1));
-	 Node.buildBinarySearchTree(wl, nodeComparator);
-	 PowerMockito.verifyPrivate(underTest,Mockito.times(1)).invoke("NodeToJson",node);
-	 PowerMockito.verifyNew(NodeComparator.class).withNoArguments();
+	 BDDMockito.verify(jsonHelper,times(1)).NodeToJson(Mockito.<Node<Integer>>anyObject());
+	 BDDMockito.verify(nodeHelper,times(1)).buildBinarySearchTree(Mockito.<WrappedList>anyObject(), 
+    		 Mockito.<NodeComparator<Integer>>anyObject());
 	 //THAN
 	 assertEquals("data",result);
 	  

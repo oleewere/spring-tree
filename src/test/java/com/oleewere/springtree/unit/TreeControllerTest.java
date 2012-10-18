@@ -6,27 +6,22 @@ import net.sf.json.JSONObject;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 
 
 import com.oleewere.springtree.domain.Node;
 import com.oleewere.springtree.domain.NodeCommand;
+import com.oleewere.springtree.jsonsupport.JSONHelper;
 import com.oleewere.springtree.services.BinarySearchTreeService;
-import com.oleewere.springtree.services.StringCuttingService;
 import com.oleewere.springtree.web.BinaryTreeController;
+import com.oleewere.springtree.wssupport.StringCuttingService;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({BinaryTreeController.class,JSONObject.class})
 public class TreeControllerTest {
 	private static final String numbersParam = "10 12 5";
 	@InjectMocks
@@ -46,30 +41,28 @@ public class TreeControllerTest {
 	@Mock
 	private BindingResult result;
 	@Mock
-	private JSONObject jsonObj;
+	private JSONHelper jsonHelper;
 	@Before
 	public void setUp() {
 	   MockitoAnnotations.initMocks(this);
 	}
 	
 	@Test
-	public void testControllerWithGet() throws Exception{
-		//GIVEN
-		PowerMockito.whenNew(NodeCommand.class).withNoArguments().thenReturn(nodeCommand);
+	public void testControllerWithGet() {
+		//GIVEN	
 		BDDMockito.given(model.addAttribute(Mockito.anyString(),Mockito.anyObject())).willReturn(model);
 		//WHEN
 		String testResult = underTest.get(model);
-		PowerMockito.verifyNew(NodeCommand.class).withNoArguments();
 		BDDMockito.verify(model,Mockito.times(1)).addAttribute(Mockito.anyString(),Mockito.anyObject());	
 		//THAN
 		assertEquals("home",testResult);
 	}
 	
 	@Test
-	public void testControllerWithPost() throws Exception {
+	public void testControllerWithPost() {
 		//GIVEN
-		PowerMockito.mockStatic(JSONObject.class);
-		BDDMockito.given(JSONObject.fromObject(Mockito.anyObject())).willReturn(jsonObj);
+		JSONObject jsonObj = new JSONObject();
+		BDDMockito.given(jsonHelper.convertNodeToJSONObject(Mockito.<Node<Integer>>anyObject())).willReturn(jsonObj);
 		BDDMockito.given(stringCuttingService.StringToNumbers(numbersParam)).willReturn(numbers);
 		BDDMockito.given(binarySearchTreeService.getTreeFromList(numbers)).willReturn(root);
 		BDDMockito.given(numbers.isEmpty()).willReturn(false);
@@ -78,8 +71,7 @@ public class TreeControllerTest {
 		//WHEN
 		String testResult = underTest.createTree(model, nodeCommand, result);
 		
-		PowerMockito.verifyStatic(Mockito.times(1));
-		JSONObject.fromObject(root);
+		BDDMockito.verify(jsonHelper, Mockito.times(1)).convertNodeToJSONObject(Mockito.<Node<Integer>>anyObject());
 		BDDMockito.verify(stringCuttingService,Mockito.times(1)).StringToNumbers(numbersParam);
 		BDDMockito.verify(model,Mockito.times(1)).addAttribute(Mockito.anyString(),Mockito.anyObject());
 		BDDMockito.verify(numbers,Mockito.times(1)).isEmpty();

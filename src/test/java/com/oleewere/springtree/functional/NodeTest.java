@@ -8,10 +8,11 @@ import org.junit.Test;
 
 import com.oleewere.springtree.domain.Direction;
 import com.oleewere.springtree.domain.Node;
-import com.oleewere.springtree.domain.NodeComparator;
+import com.oleewere.springtree.nodeservices.NodeComparator;
+import com.oleewere.springtree.nodeservices.NodeHelper;
 
 /**
- * Unit test for Generic Node.
+ * Unit test for Generic new NodeHelper().
  * 
  * @param <underTest>
  */
@@ -53,7 +54,7 @@ public class NodeTest {
 		datas.add(4);
 		datas.add(4);
 		datas.add(6);
-		Node<Integer> root = Node.buildBinarySearchTree(datas, comp);
+		Node<Integer> root = new NodeHelper().buildBinarySearchTree(datas, comp);
 		assertEquals(root.getLeftChild().getLeftChild().getData(), (Integer) 4);
 	}
 
@@ -61,7 +62,7 @@ public class NodeTest {
 	public void testBuildTreeWithOneData() {
 		List<Integer> datas = new ArrayList<Integer>();
 		datas.add(5);
-		Node<Integer> root = Node.buildBinarySearchTree(datas, comp);
+		Node<Integer> root = new NodeHelper().buildBinarySearchTree(datas, comp);
 		assertEquals(root.getDepth(root), 1);
 		assertNull(root.getLeftChild());
 	}
@@ -74,7 +75,7 @@ public class NodeTest {
 		datas.add(7);
 		datas.add(8);
 		datas.add(3);
-		Node<Integer> root = Node.buildBinarySearchTree(datas, comp);
+		Node<Integer> root = new NodeHelper().buildBinarySearchTree(datas, comp);
 		assertEquals(root.isInBinarySearchTree(root, 3, comp), true);
 
 	}
@@ -82,7 +83,7 @@ public class NodeTest {
 	@Test
 	public void testBuildNullTree() {
 		List<Integer> datas = new ArrayList<Integer>();
-		Node<Integer> root = Node.buildBinarySearchTree(datas, comp);
+		Node<Integer> root = new NodeHelper().buildBinarySearchTree(datas, comp);
 		assertNull(root);
 	}
 
@@ -95,7 +96,7 @@ public class NodeTest {
 		datas.add(6);
 		datas.add(7);
 		datas.add(8);
-		Node<Integer> root = Node.buildBinarySearchTree(datas, comp);
+		Node<Integer> root = new NodeHelper().buildBinarySearchTree(datas, comp);
 		assertEquals(root.isInBinarySearchTree(root, 9, comp), false);
 	}
 
@@ -108,8 +109,8 @@ public class NodeTest {
 		datas.add(5);
 		datas.add(3);
 		datas.add(4);
-		Node<Integer> root = Node.buildBinarySearchTree(datas, comp);
-		Node<Integer> subTree = Node.subTreeAt(root, dirs);
+		Node<Integer> root = new NodeHelper().buildBinarySearchTree(datas, comp);
+		Node<Integer> subTree = new NodeHelper().subTreeAt(root, dirs);
 		assertEquals(subTree.getData(), (Integer) 4);
 
 	}
@@ -119,7 +120,7 @@ public class NodeTest {
 		List<Direction> dirs = new ArrayList<Direction>();
 		dirs.add(Direction.L);
 		dirs.add(Direction.R);
-		assertNull(Node.subTreeAt(null, dirs));
+		assertNull(new NodeHelper().subTreeAt(null, dirs));
 	}
 
 	@Test
@@ -131,8 +132,8 @@ public class NodeTest {
 		datas.add(5);
 		datas.add(3);
 		datas.add(4);
-		Node<Integer> root = Node.buildBinarySearchTree(datas, comp);
-		Node<Integer> subTree = Node.subTreeAt(root, dirs);
+		Node<Integer> root = new NodeHelper().buildBinarySearchTree(datas, comp);
+		Node<Integer> subTree = new NodeHelper().subTreeAt(root, dirs);
 		assertNull(subTree);
 	}
 
@@ -145,8 +146,8 @@ public class NodeTest {
 		datas.add(5);
 		datas.add(3);
 		datas.add(4);
-		Node<Integer> root = Node.buildBinarySearchTree(datas, comp);
-		Node<Integer> subTree = Node.subTreeAt(root, dirs);
+		Node<Integer> root = new NodeHelper().buildBinarySearchTree(datas, comp);
+		Node<Integer> subTree = new NodeHelper().subTreeAt(root, dirs);
 		assertNull(subTree);
 	}
 	
@@ -159,8 +160,8 @@ public class NodeTest {
 		List<Integer> datas2 = new ArrayList<Integer>();
         datas2.add(1);
 		datas2.add(1);
-		final Node<Integer> root = Node.buildBinarySearchTree(datas, comp);
-		final Node<Integer> newSubTree = Node.buildBinarySearchTree(datas2, comp);
+		final Node<Integer> root = new NodeHelper().buildBinarySearchTree(datas, comp);
+		final Node<Integer> newSubTree = new NodeHelper().buildBinarySearchTree(datas2, comp);
 		
 		final Node<Integer> copy = root.copyWith(Direction.L, newSubTree);
 		
@@ -178,8 +179,8 @@ public class NodeTest {
 		List<Integer> datas2 = new ArrayList<Integer>();
         datas2.add(6);
 		datas2.add(7);
-		final Node<Integer> root = Node.buildBinarySearchTree(datas, comp);
-		final Node<Integer> newSubTree = Node.buildBinarySearchTree(datas2, comp);
+		final Node<Integer> root = new NodeHelper().buildBinarySearchTree(datas, comp);
+		final Node<Integer> newSubTree = new NodeHelper().buildBinarySearchTree(datas2, comp);
 		
 		final Node<Integer> copy = root.copyWith(Direction.R, newSubTree);
 		
@@ -206,8 +207,8 @@ public class NodeTest {
 		datas2.add(3);
 		datas2.add(4);
 		
-		final Node<Integer> root = Node.buildBinarySearchTree(datas, comp);
-		final Node<Integer> newSubTree = Node.buildBinarySearchTree(datas2, comp);
+		final Node<Integer> root = new NodeHelper().buildBinarySearchTree(datas, comp);
+		final Node<Integer> newSubTree = new NodeHelper().buildBinarySearchTree(datas2, comp);
 		
 		final Node<Integer> copy = root.copyWith(dirs, newSubTree);
 		assertEquals(copy.getData(),(Integer)6);

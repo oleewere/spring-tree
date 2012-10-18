@@ -1,6 +1,5 @@
 package com.oleewere.springtree.domain;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -54,35 +53,6 @@ public class Node<T> {
 
 	/**
 	 * 
-	 * @param data
-	 * @param comp
-	 * @return
-	 */
-	public static <T> Node<T> buildBinarySearchTree(List<T> data,
-			final Comparator<T> comp) {
-		if (data.isEmpty()) {
-			return null;
-		}
-
-		final List<T> leftList = new ArrayList<T>();
-		final List<T> rightList = new ArrayList<T>();
-
-		for (T a : data.subList(1, data.size())) {
-			if (comp.compare(data.get(0), a) < 0) {
-				rightList.add(a);
-			} else {
-				leftList.add(a);
-			}
-
-		}
-
-		return Node.getInstance(data.get(0),
-				buildBinarySearchTree(leftList, comp),
-				buildBinarySearchTree(rightList, comp));
-	}
-
-	/**
-	 * 
 	 * @param tree
 	 * @param elementToSearch
 	 * @param comp
@@ -103,30 +73,6 @@ public class Node<T> {
 		}
 	}
 
-	/**
-	 * 
-	 * @param tree
-	 * @param directions
-	 * @return
-	 */
-	public static <T> Node<T> subTreeAt(Node<T> tree, List<Direction> directions) {
-		if (tree == null) {
-			return null;
-		}
-
-		if (directions.isEmpty())
-			return tree;
-
-		final List<Direction> remainingDirections = directions.subList(1,
-				directions.size());
-
-		if (directions.get(0).equals(Direction.L)) {
-			return subTreeAt(tree.getLeftChild(), remainingDirections);
-		} else {
-			return subTreeAt(tree.getRightChild(), remainingDirections);
-		}
-
-	}
 
 	/**
 	 * 

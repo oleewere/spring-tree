@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.oleewere.springtree.domain.NodeCommand;
+import com.oleewere.springtree.jsonsupport.JSONHelper;
 import com.oleewere.springtree.services.BinarySearchTreeService;
-import com.oleewere.springtree.services.StringCuttingService;
+import com.oleewere.springtree.wssupport.StringCuttingService;
 
 @Controller
 @Slf4j
@@ -27,6 +28,9 @@ public class BinaryTreeController {
 
 	@Autowired
 	private StringCuttingService stringCuttingService;
+	
+	@Autowired
+	private JSONHelper jsonHelper;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String get(ModelMap model) {
@@ -41,13 +45,12 @@ public class BinaryTreeController {
 			BindingResult result) {
 		final List<Integer> numbers = stringCuttingService.StringToNumbers(nodeCommand.getNumbers());
 		if (!numbers.isEmpty()) {
-			final JSONObject obj = JSONObject
-					.fromObject(binarySearchTreeService
-							.getTreeFromList(numbers));
+			final JSONObject obj = jsonHelper.convertNodeToJSONObject(binarySearchTreeService.getTreeFromList(numbers));
 			model.addAttribute("createdTree", obj.toString());
 			return "result";
 		} else {
 			result.rejectValue("numbers", "required" , "Hibás bemenet!");
+			log.info("Hibás bemenet");
 			return "home";
 		}
 	}
